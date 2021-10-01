@@ -74,7 +74,7 @@ ypos:
 
 //end start 
 // now we save the compiled file so we can either run it or debug it
-                SAVENEX OPEN "baggers1.nex", StartAddress
+                SAVENEX OPEN "cawb.nex", StartAddress
                 SAVENEX CORE 3, 0, 0                                // Next core 3.0.0 required as minimum
                 SAVENEX CFG  0
                 SAVENEX AUTO
