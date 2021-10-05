@@ -10,17 +10,20 @@ StackStart:     db      0
 //              org StackStart
 StartAddress   
     NEXTREG CPU_SPEED, SPEED_3_5_MHZ
-    LD A,0
-    LD (xpos), A
-    LD (ypos), A
+    LD A,$55
+    ld ($4000), A
 
     LD HL,sprites
     ld bc, $4000
     ld a,0
     call DMASprites
 
-    NEXTREG SPR_LAYER_CONTROL, $01
-
+   NEXTREG SPR_LAYER_CONTROL, $01
+myloop:
+    call sprint
+    db 22,128,40,"Hi there!", 0
+    call sprint
+    db 22,18,4,"Printing at the top", 0
 
 loop:
     NEXTREG SPR_SELECT, 1
@@ -94,6 +97,72 @@ s_offlp:
     NEXTREG SPR_PATTERN_INC, 0 ; Clear all 128 possible sprtites
     DJNZ s_offlp
     ret
+
+    ; sprint routine
+sprint:
+    pop hl
+    call print
+    jp (hl)
+
+
+
+    ;print_routines
+    ; DE = position, HL = message, A = character
+
+print:
+    ld a,(hl)
+    inc hl
+    or a
+    ret z
+    cp 32
+    jr c, printcode
+    call printchar
+    jp print
+
+printcode:
+    cp 22
+    jr nz,notprintat
+    ld e,(hl)
+    inc hl
+    ld d,(hl)
+    inc hl
+    jp print
+
+notprintat:
+    jp print
+
+printchar:
+    push HL
+    push DE
+    pixelad
+    ex de,hl
+    sub 32
+    ld L, A
+    ld h, 0
+    add hl,hl
+    add hl,hl
+    add hl,hl
+    add hl,font
+    ex de,hl
+    ld b,8
+printcharloop:
+    ld a,(de)
+    ld (hl),a
+    pixeldn         ;moves HL down 1 pixel
+    inc de
+    djnz printcharloop
+    pop de
+    pop hl
+    ld a,e
+    add a,8
+    ld e,a
+    ret nc
+    ld e,0
+    ld a,d
+    add a,8
+    ld d,a
+    ret
+
 plot:
     LD A,D
     CP 192
@@ -129,7 +198,7 @@ addsprite:
     ret
 DMASprites:
     ld (DMAsrcS),HL
-    ld (DMAlenS),BC
+    ld (DMAlenS), BC
     ld bc, $303b
     out (c), a
     ld hl, DMAcodeS
@@ -158,11 +227,13 @@ DMAcodelenS    EQU $-DMAcodeS
 
 
 xpos: 
-    NOP
+    db 128
 ypos: 
-    NOP
+    db 96
 
 sprites incbin "arrow.spr"
+
+font incbin "SpecFont.chr"
 
 //end start 
 // now we save the compiled file so we can either run it or debug it
