@@ -41,7 +41,12 @@ loop:
     LD E,A
     LD A, (ypos)
     LD D,A
-    CALL plot
+; Check for M being pressed
+    LD BC, $7FFE
+    IN A, (C)
+    BIT 2,A
+    CALL Z, plot
+
 ; Check for Q being pressed
     LD BC, $fbfe
     IN A, (C)
