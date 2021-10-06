@@ -9,6 +9,7 @@
             include"print.asm"
             include"commonroutines.asm"
             include"gamedata.asm"
+            include"enemies.asm"
 StackEnd:
                 ds      127 
 StackStart:     db      0        
@@ -44,7 +45,7 @@ loop:
     ld b,$00 ;7-4 - colour offset : 3 - xflip : 2 - yflip : 1 - rotate : 0 - x8 msb x
     ld h,$00 ;7 - 4bit : 6 - image lsb : 6 - t relative : 4-3 - xscale : 21 - yscale : 0 - y8 msb y
     call addsprite
-
+    call drawcharacters
     CALL delay
     LD A, (xpos)
     LD E,A
@@ -97,6 +98,66 @@ notp:
     jp NZ, loop
     call spr_off
     ret
+
+drawcharacters:
+    ld ix, characterdata
+    ld a,(numberofcharacters)
+    ld b,a
+drawcharactersloop:
+    push bc
+    ld e,(IX+CHARACTER_X)
+    ld d,(ix+CHARACTER_Y)
+    call plot
+
+    ld e, (ix+CHARACTER_X)
+    ld d,0
+    add de, 32
+    ld a, (ix+CHARACTER_Y)
+    add a, 32
+    ld l,a
+    ld c,0
+    ld b,0
+    ld h,0
+    call addsprite
+
+    call handle_characters
+
+    pop bc
+    ld de, CHARACTER_SIZE
+    add ix, de
+    djnz drawcharactersloop
+    ret
+
+handle_characters:
+    ld ix, characterdata
+    ld a,(numberofcharacters)
+    ld b,a
+handle_character_loop:
+    push bc
+    ld e,(IX+CHARACTER_X)
+    ld d,(ix+CHARACTER_Y)
+
+    ld a, (IX+CHARACTER_ACTION)
+    ld l, (IX+CHARACTER_ACTION_TABLE)
+    ld h, (IX+CHARACTER_ACTION_TABLE+1)
+    call usejumptable
+
+
+
+    pop bc
+    ld de, CHARACTER_SIZE
+    add ix, de
+    djnz handle_character_loop
+    ret
+
+usejumptable:
+    add hl, a
+    add hl, a
+    ld a, (hl)
+    inc hl
+    ld h, (hl)
+    ld l,a
+    jp (hl)
 
 
 //end start 
