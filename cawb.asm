@@ -4,16 +4,18 @@
                 DEVICE  ZXSPECTRUMNEXT                               // tell the assembler we want it for Spectrum Next
                 ORG     0x8000
             include"defines.asm"
+            include"gamedefines.asm"
+            include"nextsprites.asm"
             include"print.asm"
+            include"commonroutines.asm"
+            include"gamedata.asm"
 StackEnd:
                 ds      127 
 StackStart:     db      0        
-//              org StackStart
 StartAddress   
     NEXTREG CPU_SPEED, SPEED_3_5_MHZ
     LD A,$55
     ld ($4000), A
-
     LD HL,sprites
     ld bc, $4000
     ld a,0
@@ -88,7 +90,6 @@ notp:
     LD A,D
     LD (ypos), A
 
-
 ; Check for Space being pressed - exit
     LD BC, $7ffe
     IN A, (C)
@@ -97,93 +98,6 @@ notp:
     call spr_off
     ret
 
-spr_off:
-    NEXTREG SPR_SELECT, 0
-    ld b, 128
-s_offlp:
-    NEXTREG SPR_PATTERN_INC, 0 ; Clear all 128 possible sprtites
-    DJNZ s_offlp
-    ret
-
-    ; sprint routine
-
-
-plot:
-    LD A,D
-    CP 192
-    RET NC
-    PIXELAD ; Sets HL to the pixel address of de
-    SETAE ; Sets a - 'The corrct bit set for E pixel X coord & 7' ???
-    OR(HL)
-    LD(HL), A
-    RET
-delay: 
-    LD HL, 3000
-dellp:
-    DEC HL
-    LD A,H
-    OR L
-    JR NZ,dellp
-    RET
-
-addsprite:
-    ld a,e
-    nextreg SPR_X_VALUE,a
-    ld a,l
-    nextreg SPR_Y_VALUE,a
-    ld a,d
-    and 1
-    or b
-    nextreg SPR_X_MSB_FLIP,a
-    ld a,c
-    or $c0
-    nextreg SPR_PATTERN, a
-    ld a,h
-    nextreg SPR_ATTRIBUTES_INC, a
-    ret
-DMASprites:
-    ld (DMAsrcS),HL
-    ld (DMAlenS), BC
-    ld bc, $303b
-    out (c), a
-    ld hl, DMAcodeS
-    ld b, DMAcodelenS
-    ld c, Z80_DMA_DATAGEAR_PORT
-    otir
-    ret
-
-DMAcodeS:
-    DB DMA_DISABLE
-    DB %01111101
-DMAsrcS:
-    DW 0
-DMAlenS:
-    DW 0
-    DB %01010100
-    DB %00000010
-    DB %01101000
-    DB %00000010
-    DB %10101101
-    DW SPR_IMAGE_PORT
-    DB %10000010
-    DB DMA_LOAD
-    DB DMA_ENABLE
-DMAcodelenS    EQU $-DMAcodeS
-
-
-xpos: 
-    db 128
-ypos: 
-    db 96
-
-score:
-    db 12
-bigscore:
-    dw $ff00
-
-sprites incbin "arrow.spr"
-
-font incbin "SpecFont.chr"
 
 //end start 
 // now we save the compiled file so we can either run it or debug it

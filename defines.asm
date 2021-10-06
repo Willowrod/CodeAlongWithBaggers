@@ -36,3 +36,8 @@ PRINTCLS                    EQU 12
 PRINTDECIMAL8               EQU 14
 PRINTDECIMAL16              EQU 15
 PRINTEOF                    EQU 0
+
+
+; characters
+
+
