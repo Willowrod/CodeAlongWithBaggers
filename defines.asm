@@ -26,3 +26,13 @@ DMA_DISABLE                 EQU $83
 DMA_ENABLE                  EQU $87
 
 SPR_LAYER_CONTROL           EQU $15
+
+
+; print codes
+
+PRINTAT                     EQU 22
+PRINTINK                    EQU 16
+PRINTCLS                    EQU 12
+PRINTDECIMAL8               EQU 14
+PRINTDECIMAL16              EQU 15
+PRINTEOF                    EQU 0

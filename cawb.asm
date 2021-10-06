@@ -1,9 +1,10 @@
-            include"defines.asm"
+
             
                 OPT     --zxnext    
                 DEVICE  ZXSPECTRUMNEXT                               // tell the assembler we want it for Spectrum Next
                 ORG     0x8000
-
+            include"defines.asm"
+            include"print.asm"
 StackEnd:
                 ds      127 
 StackStart:     db      0        
@@ -21,9 +22,14 @@ StartAddress
    NEXTREG SPR_LAYER_CONTROL, $01
 myloop:
     call sprint
-    db 22,128,40,"Hi there!", 0
-    call sprint
-    db 22,18,4,"Printing at the top", 0
+    db PRINTINK,56,PRINTCLS
+    db PRINTAT,0,0,PRINTINK,4*8+1,"Hello World!"
+    db PRINTAT,0,8,PRINTINK,6*8+1,"Hello World!"
+    db PRINTAT,0,16,PRINTINK,7*8+1,"Hello World!"
+    db PRINTAT,128,148,PRINTINK,56+1,"Hi there!"
+    db PRINTAT,18,108,PRINTINK,56+2,"Printing at the top"
+    db PRINTAT,10,96,PRINTINK,3*8+6,"COLOURZZZZZ"
+    db PRINTEOF
 
 loop:
     NEXTREG SPR_SELECT, 1
@@ -99,69 +105,7 @@ s_offlp:
     ret
 
     ; sprint routine
-sprint:
-    pop hl
-    call print
-    jp (hl)
 
-
-
-    ;print_routines
-    ; DE = position, HL = message, A = character
-
-print:
-    ld a,(hl)
-    inc hl
-    or a
-    ret z
-    cp 32
-    jr c, printcode
-    call printchar
-    jp print
-
-printcode:
-    cp 22
-    jr nz,notprintat
-    ld e,(hl)
-    inc hl
-    ld d,(hl)
-    inc hl
-    jp print
-
-notprintat:
-    jp print
-
-printchar:
-    push HL
-    push DE
-    pixelad
-    ex de,hl
-    sub 32
-    ld L, A
-    ld h, 0
-    add hl,hl
-    add hl,hl
-    add hl,hl
-    add hl,font
-    ex de,hl
-    ld b,8
-printcharloop:
-    ld a,(de)
-    ld (hl),a
-    pixeldn         ;moves HL down 1 pixel
-    inc de
-    djnz printcharloop
-    pop de
-    pop hl
-    ld a,e
-    add a,8
-    ld e,a
-    ret nc
-    ld e,0
-    ld a,d
-    add a,8
-    ld d,a
-    ret
 
 plot:
     LD A,D
