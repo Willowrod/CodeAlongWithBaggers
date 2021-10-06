@@ -19,16 +19,14 @@ StartAddress
     ld a,0
     call DMASprites
 
-   NEXTREG SPR_LAYER_CONTROL, $01
-myloop:
+    NEXTREG SPR_LAYER_CONTROL, $01
+
     call sprint
     db PRINTINK,56,PRINTCLS
-    db PRINTAT,0,0,PRINTINK,4*8+1,"Hello World!"
-    db PRINTAT,0,8,PRINTINK,6*8+1,"Hello World!"
-    db PRINTAT,0,16,PRINTINK,7*8+1,"Hello World!"
-    db PRINTAT,128,148,PRINTINK,56+1,"Hi there!"
-    db PRINTAT,18,108,PRINTINK,56+2,"Printing at the top"
-    db PRINTAT,10,96,PRINTINK,3*8+6,"COLOURZZZZZ"
+    db PRINTAT,32,0,"Score: ",PRINTINK, 2*8+7, PRINTDECIMAL8
+    dw score
+    db PRINTAT,0,8,PRINTINK, 56,"Big score: ",PRINTINK, 2*8+7, PRINTDECIMAL16
+    dw bigscore
     db PRINTEOF
 
 loop:
@@ -50,6 +48,7 @@ loop:
     LD E,A
     LD A, (ypos)
     LD D,A
+
 ; Check for M being pressed
     LD BC, $7FFE
     IN A, (C)
@@ -88,6 +87,8 @@ notp:
     LD (xpos), A
     LD A,D
     LD (ypos), A
+
+
 ; Check for Space being pressed - exit
     LD BC, $7ffe
     IN A, (C)
@@ -174,6 +175,11 @@ xpos:
     db 128
 ypos: 
     db 96
+
+score:
+    db 12
+bigscore:
+    dw $ff00
 
 sprites incbin "arrow.spr"
 

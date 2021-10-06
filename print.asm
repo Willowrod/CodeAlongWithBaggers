@@ -51,6 +51,39 @@ notprintink:
     ld DE,0
     jp print
 notprintcls:
+    cp PRINTDECIMAL8
+    jr nz, notprintdec8
+    ld c, (hl)
+    inc hl
+    ld b,(hl)
+    inc hl
+    push hl
+    ld a, (bc)
+    ld l,a
+    ld h, 0
+    call printdec100
+    pop hl
+    jp print
+
+notprintdec8:
+    cp PRINTDECIMAL16
+    jp nz, notprintdec16
+    ld c,(hl)
+    inc hl
+    ld b,(hl)
+    inc hl
+    push hl
+    ld a, (bc)
+    ld l,a
+    inc bc
+    ld a,(bc)
+    ld h,a
+    call printdec10000
+    pop hl
+    jp print
+
+
+notprintdec16:
     jp print
 
 printchar:
@@ -81,6 +114,7 @@ printcharloop:
     rra
     or $58
     ld h,a
+    add hl, -32
     ld a,(attr)
     ld (hl),a
 
@@ -95,5 +129,33 @@ printcharloop:
     add a,8
     ld d,a
     ret
+
+printdec10000:
+    ld  bc, 10000
+    call printdec1
+printdec1000:
+    ld  bc, 1000
+    call printdec1
+printdec100:
+    ld  bc, 100
+    call printdec1
+printdec10:
+    ld  bc, 10
+    call printdec1
+    ld a,l
+    jr printdec0
+printdec1:
+    ld a,255
+printdecl:
+    inc a
+    or a
+    sbc hl,bc
+    jr nc, printdecl
+    add hl, bc
+printdec0:
+    add a, "0"
+    call printchar
+    ret
+
 
 attr: db 2
