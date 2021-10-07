@@ -14,7 +14,7 @@ StackEnd:
                 ds      127 
 StackStart:     db      0        
 StartAddress   
-    NEXTREG CPU_SPEED, SPEED_3_5_MHZ
+    NEXTREG CPU_SPEED, SPEED_28_MHZ
     LD A,$55
     ld ($4000), A
     LD HL,sprites
@@ -45,7 +45,9 @@ loop:
     ld b,$00 ;7-4 - colour offset : 3 - xflip : 2 - yflip : 1 - rotate : 0 - x8 msb x
     ld h,$00 ;7 - 4bit : 6 - image lsb : 6 - t relative : 4-3 - xscale : 21 - yscale : 0 - y8 msb y
     call addsprite
+
     call drawcharacters
+    call handle_characters
     CALL delay
     LD A, (xpos)
     LD E,A
@@ -119,8 +121,6 @@ drawcharactersloop:
     ld b,0
     ld h,0
     call addsprite
-
-    call handle_characters
 
     pop bc
     ld de, CHARACTER_SIZE

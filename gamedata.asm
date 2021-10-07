@@ -27,7 +27,7 @@ characterdata:
     db 0,0,0,0,0,0,0,0
     db 0,0,0,0,0,0,0,0
 
-    db 0
+    db 2
     dw char_1_action_table
     db $a0,$08
     db 0
