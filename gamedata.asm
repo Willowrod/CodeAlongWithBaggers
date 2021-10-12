@@ -1,9 +1,16 @@
 
 
+initial_player_x:
+    db 128
+initial_player_y:
+    db 96
 xpos: 
     db 128
 ypos: 
     db 96
+
+player_direction:
+    db 0
 
 score:
     db 12
@@ -14,12 +21,10 @@ sprites incbin "arrow.spr"
 
 font incbin "SpecFont.chr"
 
-numberofcharacters:
-    db 2
-characterdata:
-    db 1
+initial_character_data:
+    db 4
     dw char_1_action_table
-    db $60,$08
+    db $06,$08
     db 0
     db 0
     db 0
@@ -36,6 +41,9 @@ characterdata:
     db 0,0,0,0,0,0,0,0
     db 0,0,0,0,0,0,0,0
     db 0,0,0,0,0,0,0,0
+
+character_data
+    ds TOTAL_CHARACTERS*CHARACTER_SIZE
 
 char_1_action_table:
     dw char1_stand_still
