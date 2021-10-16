@@ -1,3 +1,19 @@
+debug:
+    push de
+    ld de, (debug_data_1)
+    call printhex8
+    ld (debug_data_1), de
+    pop de
+
+    ret
+
+debug_1_inc:
+    push hl
+    ld hl, (debug_data_1)
+    inc hl
+    ld (debug_data_1), hl
+    pop hl
+    ret
 
 plot:
     LD A,D

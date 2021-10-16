@@ -58,6 +58,9 @@ loop:
     BIT 0, A
     jp z, game_exit
     call check_game_status
+
+    call debug_1_inc
+
     jp loop
 
 game_exit:

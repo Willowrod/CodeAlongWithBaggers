@@ -74,6 +74,36 @@ notprintdec8:
 
 
 notprintdec16:
+    cp PRINTHEX8
+    jp nz, notprinthex8
+    ld c, (hl)
+    inc hl
+    ld b,(hl)
+    inc hl
+    push hl
+    ld a, (bc)
+    ld l,a
+    ld h, 0
+    call printhex8
+    pop hl
+    jp print
+notprinthex8:
+    cp PRINTHEX16
+    jp nz, notprinthxe16
+    ld c,(hl)
+    inc hl
+    ld b,(hl)
+    inc hl
+    push hl
+    ld a, (bc)
+    ld l,a
+    inc bc
+    ld a,(bc)
+    ld h,a
+    call printhex16
+    pop hl
+    jp print
+notprinthxe16:
     jp print
 
 printchar:
@@ -164,5 +194,28 @@ cls:
 setink:    ; Sets the ink and paper to the current value of 'a'
     ld (attr), a
     ret
+
+printhex16:
+    ld a,h
+    call printhex8
+    ld a,l
+printhex8:
+    push af
+    swapnib
+    call printhex4
+    pop af
+printhex4:
+    and 15
+    push hl
+    ld hl,hextab
+    add hl,a
+    ld a,(hl)
+    call printchar
+    pop hl
+    ret
+
+hextab:
+    db "0123456789ABCDEF"
+
 
 attr: db 2

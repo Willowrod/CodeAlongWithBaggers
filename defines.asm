@@ -35,6 +35,8 @@ PRINTINK                    EQU 16
 PRINTCLS                    EQU 12
 PRINTDECIMAL8               EQU 14
 PRINTDECIMAL16              EQU 15
+PRINTHEX8                   EQU 17
+PRINTHEX16                  EQU 18
 PRINTEOF                    EQU 0
 
 
