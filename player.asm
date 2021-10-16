@@ -9,7 +9,7 @@ set_lives:
     ld (player_lives), a
 
 init_player:
-    ld de, $b080
+    ld de, initial_player_x
     ld (xpos), de
     ld a, PLAYER_MOVE_UP
     ld (player_direction), a
@@ -31,6 +31,7 @@ draw_player:
     call addsprite
     ret
 handle_player:
+    ld de, (xpos)
     ld a,(player_direction)
     ld l,a
 

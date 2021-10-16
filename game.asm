@@ -34,3 +34,21 @@ check_game_status:
     jp nz, respawn
     jp new_game
     ret
+
+wait_for_space_loop:
+    LD BC, $7ffe
+    IN A, (C)
+    BIT 0, A
+    jr nz, wait_for_space_loop
+wait_for_space_release_loop:
+    LD BC, $7ffe
+    IN A, (C)
+    BIT 0, A
+    jr z, wait_for_space_release_loop
+    ret
+
+clear_game_screen:
+    ld a, 56
+    call setink
+    call cls
+    ret

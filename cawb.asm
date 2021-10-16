@@ -12,40 +12,39 @@
             include"player.asm"
             include"game.asm"
             include"enemies.asm"
+            include"menu.asm"
 StackEnd:
                 ds      127 
 StackStart:     db      0        
 StartAddress   
     NEXTREG CPU_SPEED, SPEED_28_MHZ
-    LD A,$55
-    ld ($4000), A
     LD HL,sprites
     ld bc, $4000
     ld a,0
     call DMASprites
 
     NEXTREG SPR_LAYER_CONTROL, $01
-    ld a, 56
-    call setink
-    call cls
-
-    call draw_boundries
 new_game:
     call set_lives
 
 
 respawn:
-    call init_player
-    call init_npcs
+   call clear_game_screen
+   call init_player
+   call init_npcs
 
+    call spr_off
+   call menu
+
+    call wait_for_space_loop
+    call menu
+    call clear_game_screen
+
+    call draw_boundries
 loop:
     call print_out_data
     
-    NEXTREG SPR_SELECT, 1
-
-
-    call draw_player
-    call draw_characters
+    call draw_sprites_on_screen
     
     call handle_player
     call handle_characters
@@ -63,6 +62,13 @@ loop:
 
     jp loop
 
+draw_sprites_on_screen:
+    NEXTREG SPR_SELECT, 1
+
+
+    call draw_player
+    call draw_characters
+    ret
 game_exit:
     call spr_off
     ret

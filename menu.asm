@@ -1,0 +1,11 @@
+
+menu:
+    call sprint
+    db PRINTAT,64,32,"WILLOW ROD GAMES"
+    db PRINTAT,96,48,"PRESENTS"
+    db PRINTINK, 2*8+7+64
+    db PRINTAT,80,80,"LIGHT RIDING"
+    db PRINTINK, 56
+    db PRINTAT,48,152,"PRESS SPACE TO PLAY!"
+    db PRINTEOF
+    ret
