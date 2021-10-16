@@ -1,11 +1,20 @@
 
 
 
+
+set_lives:
+    XOR a
+    ld (gameover), a
+    ld a,START_LIVES
+    ld (player_lives), a
+
 init_player:
     ld de, $b080
     ld (xpos), de
-    xor a
+    ld a, PLAYER_MOVE_UP
     ld (player_direction), a
+    xor a
+    ld (player_dead), a
     ret
 
 draw_player:
@@ -23,55 +32,89 @@ draw_player:
     ret
 handle_player:
     ld a,(player_direction)
-    ld c,a
-
-    LD A, (xpos)
-    LD E,A
-    LD A, (ypos)
-    LD D,A
-; Check for M being pressed
-    LD BC, $7FFE
-    IN A, (C)
-    BIT 2,A
-    CALL Z, plot
+    ld l,a
 
 ; Check for Q being pressed
     LD BC, $fbfe
     IN A, (C)
     BIT 0, A
     JR NZ, notq
-    DEC D
+    ld l,PLAYER_MOVE_UP
 ; Check for A being pressednotq:
 notq:
     LD BC, $fdfe
     IN A, (C)
     BIT 0, A
     JR NZ, nota
-    INC D
+    ld l,PLAYER_MOVE_DOWN
 ; Check for O being pressed
 nota:
     LD BC, $dffe
     IN A, (C)
     BIT 1, A
     JR NZ, noto
-    DEC E
+    ld l,PLAYER_MOVE_LEFT
 ; Check for P being pressed
 noto:
     LD BC, $dffe
     IN A, (c)
     BIT 0, A
     JR NZ, notp
-    INC E
+    ld l,PLAYER_MOVE_RIGHT
+
 notp:
+    ld a,l
+    ld (player_direction), a
+    and 3
+    ld hl, URDLjptable
+    call usejumptable
+    call checkpixel
+    jp nz, player_death
     LD A,E
     LD (xpos), A
     LD A,D
     LD (ypos), A
+    call plot
+    ret
 
-; Check for Space being pressed - exit
-    LD BC, $7ffe
+URDLjptable:
+    dw player_up
+    dw player_right
+    dw player_down
+    dw player_left
+
+player_up:
+    dec d
+    ret
+
+player_right:
+    inc e
+    ret
+
+player_down:
+    inc d
+    ret
+
+player_left:
+    dec e
+    ret
+
+player_death:
+    ld a,1
+    ld (player_dead), a
+    ld a, (player_lives)
+    dec a
+    ld (player_lives), a
+    ret nz
+    ld a,1
+    ld (gameover), a
+    ret
+
+
+check_m
+    ; Check for M being pressed
+    LD BC, $7FFE
     IN A, (C)
-    BIT 0, A
-    jp NZ, loop
-    call spr_off
+    BIT 2,A
+    CALL Z, plot
     ret

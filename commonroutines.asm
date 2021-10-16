@@ -16,3 +16,12 @@ dellp:
     OR L
     JR NZ,dellp
     RET
+
+usejumptable:
+    add hl, a
+    add hl, a
+    ld a, (hl)
+    inc hl
+    ld h, (hl)
+    ld l,a
+    jp (hl)

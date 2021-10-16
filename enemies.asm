@@ -55,14 +55,6 @@ handle_character_loop:
     djnz handle_character_loop
     ret
 
-usejumptable:
-    add hl, a
-    add hl, a
-    ld a, (hl)
-    inc hl
-    ld h, (hl)
-    ld l,a
-    jp (hl)
 char1_stand_still:
     ret
 char1_down:

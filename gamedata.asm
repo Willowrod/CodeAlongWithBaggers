@@ -8,6 +8,8 @@ xpos:
     db 128
 ypos: 
     db 96
+player_lives:
+    db START_LIVES
 
 player_direction:
     db 0
@@ -24,7 +26,7 @@ font incbin "SpecFont.chr"
 initial_character_data:
     db 4
     dw char_1_action_table
-    db $06,$08
+    db $16,$20
     db 0
     db 0
     db 0
@@ -34,7 +36,7 @@ initial_character_data:
 
     db 2
     dw char_1_action_table
-    db $a0,$08
+    db $a0,$20
     db 0
     db 0
     db 0
@@ -52,4 +54,16 @@ char_1_action_table:
     dw char1_up
     dw char1_right
 
+
+gameover:
+    db 0
+player_dead:
+    db 0
+
+debug_data_1:
+    dw 0
+debug_data_2:
+    dw 0
+debug_data_3:
+    dw 0
 

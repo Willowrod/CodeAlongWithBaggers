@@ -25,30 +25,44 @@ StartAddress
     call DMASprites
 
     NEXTREG SPR_LAYER_CONTROL, $01
-
-    call sprint
-    db PRINTINK,56,PRINTCLS
-    ; db PRINTAT,32,0,"Score: ",PRINTINK, 2*8+7, PRINTDECIMAL8
-    ; dw score
-    ; db PRINTAT,0,8,PRINTINK, 56,"Big score: ",PRINTINK, 2*8+7, PRINTDECIMAL16
-    ; dw bigscore
-    db PRINTEOF
+    ld a, 56
+    call setink
+    call cls
 
     call draw_boundries
+new_game:
+    call set_lives
 
+
+respawn:
     call init_player
     call init_npcs
 
 loop:
+    call print_out_data
+    
     NEXTREG SPR_SELECT, 1
 
 
     call draw_player
     call draw_characters
-    call handle_characters
-    CALL delay
+    
     call handle_player
+    call handle_characters
 
+
+    CALL delay
+    
+    LD BC, $7ffe
+    IN A, (C)
+    BIT 0, A
+    jp z, game_exit
+    call check_game_status
+    jp loop
+
+game_exit:
+    call spr_off
+    ret
 
 
 //end start 

@@ -17,7 +17,9 @@ MOVE_RIGHT                  EQU 4
 STOP_CHARACTER              EQU 0
 
 
-PLAYER_MOVE_DOWN            EQU 0
-PLAYER_MOVE_LEFT            EQU 1
-PLAYER_MOVE_UP              EQU 2
-PLAYER_MOVE_RIGHT           EQU 3
+PLAYER_MOVE_UP              EQU 0
+PLAYER_MOVE_RIGHT           EQU 1
+PLAYER_MOVE_DOWN            EQU 2
+PLAYER_MOVE_LEFT            EQU 3
+
+START_LIVES                 EQU 3

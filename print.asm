@@ -32,22 +32,12 @@ notprintat:
     jp nz, notprintink
     ld a, (hl)
     inc hl
-    ld (attr), a
+    call setink
     jp print
 notprintink:
     cp PRINTCLS
     jp nz, notprintcls
-    push hl
-    ld hl, $4000
-    ld de, $4001
-    ld bc, $1800
-    ld (hl), l
-    ldir
-    ld bc, $2ff
-    ld a, (attr)
-    ld (hl), a
-    ldir
-    pop HL
+    call cls
     ld DE,0
     jp print
 notprintcls:
@@ -157,5 +147,22 @@ printdec0:
     call printchar
     ret
 
+cls:
+    push hl
+    ld hl, $4000
+    ld de, $4001
+    ld bc, $1800
+    ld (hl), l
+    ldir
+    ld bc, $2ff
+    ld a, (attr)
+    ld (hl), a
+    ldir
+    pop HL
+    ret
+
+setink:    ; Sets the ink and paper to the current value of 'a'
+    ld (attr), a
+    ret
 
 attr: db 2
