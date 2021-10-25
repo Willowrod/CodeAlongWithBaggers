@@ -7,6 +7,7 @@ s_offlp:
     ret
 
 addsprite:
+    ret
     ld a,e
     nextreg SPR_X_VALUE,a
     ld a,l

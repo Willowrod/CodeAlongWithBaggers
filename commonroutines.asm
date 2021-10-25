@@ -25,7 +25,7 @@ plot:
     LD(HL), A
     RET
 delay: 
-    LD HL, 3000
+    LD HL, 10000
 dellp:
     DEC HL
     LD A,H

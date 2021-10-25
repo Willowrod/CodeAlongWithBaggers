@@ -29,12 +29,12 @@ new_game:
 
 
 respawn:
-   call clear_game_screen
-   call init_player
-   call init_npcs
+    call clear_game_screen
+    call init_player
+    call init_npcs
 
     call spr_off
-   call menu
+    call menu
 
     call wait_for_space_loop
     call menu
