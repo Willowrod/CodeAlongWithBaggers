@@ -76,7 +76,8 @@ game_exit:
 
 //end start 
 // now we save the compiled file so we can either run it or debug it
-                SAVENEX OPEN "cawb.nex", StartAddress
+//                SAVENEX OPEN "cawb.nex", StartAddress
+                SAVENEX OPEN "/Users/mikehall/Documents/NextSync/home/CAWB/cawb.nex", StartAddress
                 SAVENEX CORE 3, 0, 0                                // Next core 3.0.0 required as minimum
                 SAVENEX CFG  0
                 SAVENEX AUTO

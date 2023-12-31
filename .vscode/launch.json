@@ -7,25 +7,6 @@
         {
             "type": "dezog",
             "request": "launch",
-            "name": "Simulator",
-            "remoteType": "zsim",
-            "zsim": {
-                "memoryModel": "ZX48K",
-                "vsyncInterrupt": true,
-                "ulaScreen": true,
-                "zxKeyboard": true
-            },
-            "sjasmplus": [
-                {
-                    "path": "your_sld_file"
-                }
-            ],
-            "topOfStack": "your_stack_top",
-            "load": "your_sna_or_nex_file"
-        },
-        {
-            "type": "dezog",
-            "request": "launch",
             "name": "CSpect",
             "remoteType": "cspect",
 // connect to the CSpect emulator via TCIP
@@ -54,7 +35,12 @@
             },
             "load": "${fileBasenameNoExtension}.nex",
             "skipInterrupt": false,
-            "startAutomatically": false
+            "startAutomatically": false,
+            "sjasmplus": [
+                {
+                    "path": "//usr/local/bin/sjasmplus"
+                }
+            ],
         }
     ]
 }
