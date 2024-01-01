@@ -41,7 +41,7 @@ handle_player:
     BIT 0, A
     JR NZ, notq
     ld l,PLAYER_MOVE_UP
-; Check for A being pressednotq:
+; Check for A being pressed
 notq:
     LD BC, $fdfe
     IN A, (C)

@@ -13,32 +13,48 @@
             include"game.asm"
             include"enemies.asm"
             include"menu.asm"
+            include"screentasks.asm"
+            include"banks.asm"
 StackEnd:
                 ds      127 
 StackStart:     db      0        
-StartAddress   
-    NEXTREG CPU_SPEED, SPEED_28_MHZ
-    LD HL,sprites
+StartAddress: 
+    ld (stackstore), sp
+    nextreg CPU_SPEED, SPEED_28_MHZ
+    ; call enter_layer_2
+     call getbanks
+
+    ld HL,sprites
     ld bc, $4000
     ld a,0
     call DMASprites
 
-    NEXTREG SPR_LAYER_CONTROL, $01
+    nextreg SPR_LAYER_CONTROL, $01
 new_game:
     call set_lives
 
 
 respawn:
+    call exit_layer_2
+    call setbanks
     call clear_game_screen
     call init_player
     call init_npcs
 
     call spr_off
     call menu
-
-    call wait_for_space_loop
+check_for_input:
+    call wait_for_space_loop    
+    jp z, start_game
+check_for_quit:
+    call wait_for_zero_loop
+    jp z, exit_program
+    jp check_for_input
+start_game:
     call menu
     call clear_game_screen
+    call enter_layer_2
+    call getbanks
 
     call draw_boundries
 loop:
@@ -50,12 +66,16 @@ loop:
     call handle_characters
 
 
-    CALL delay
-    
-    LD BC, $7ffe
-    IN A, (C)
-    BIT 0, A
-    jp z, game_exit
+    call delay
+    ; check for space to quit.....
+    ld BC, $7ffe
+    in A, (C)
+    bit 0, A
+    jp nz, normal_loop_continue
+    call wait_for_space_release_loop
+    jp respawn
+
+normal_loop_continue:
     call check_game_status
 
     call debug_1_inc
@@ -63,7 +83,7 @@ loop:
     jp loop
 
 draw_sprites_on_screen:
-    NEXTREG SPR_SELECT, 1
+    nextreg SPR_SELECT, 1
 
 
     call draw_player
@@ -71,6 +91,13 @@ draw_sprites_on_screen:
     ret
 game_exit:
     call spr_off
+    ret
+
+exit_program:
+
+;    call setbanks
+;    call exit_layer_2
+    ld sp, (stackstore)
     ret
 
 

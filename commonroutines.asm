@@ -41,3 +41,5 @@ usejumptable:
     ld h, (hl)
     ld l,a
     jp (hl)
+
+l2plot:

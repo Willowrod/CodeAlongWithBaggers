@@ -27,6 +27,24 @@ DMA_ENABLE                  EQU $87
 
 SPR_LAYER_CONTROL           EQU $15
 
+; Layer 2 specific
+
+LAYER_2_ACCESS_PORT         EQU $123B
+NEXTREG_REG_SELECT_PORT     EQU $243B
+NEXTREG_REG_ACCESS_PORT     EQU $253B
+SPRITE_SLOT_SELECT_PORT     EQU $303B
+
+; Memory banks
+
+MMU_REGISTER_0              EQU $50
+MMU_REGISTER_1              EQU $51
+MMU_REGISTER_2              EQU $52
+MMU_REGISTER_3              EQU $53
+MMU_REGISTER_4              EQU $54
+MMU_REGISTER_5              EQU $55
+MMU_REGISTER_6              EQU $56
+MMU_REGISTER_7              EQU $57
+
 
 ; print codes
 

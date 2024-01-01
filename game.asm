@@ -39,12 +39,29 @@ wait_for_space_loop:
     LD BC, $7ffe
     IN A, (C)
     BIT 0, A
-    jr nz, wait_for_space_loop
+    ret nz;, wait_for_space_loop
 wait_for_space_release_loop:
     LD BC, $7ffe
     IN A, (C)
     BIT 0, A
     jr z, wait_for_space_release_loop
+    ld a,0
+    BIT 0, A
+    ret
+
+
+wait_for_zero_loop:
+    LD BC, $effe
+    IN A, (C)
+    BIT 0, A
+    ret nz;, wait_for_space_loop
+wait_for_zero_release_loop:
+    LD BC, $effe
+    IN A, (C)
+    BIT 0, A
+    jr z, wait_for_zero_release_loop
+    ld a,0
+    BIT 0, A
     ret
 
 clear_game_screen:

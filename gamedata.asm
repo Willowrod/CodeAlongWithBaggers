@@ -67,3 +67,10 @@ debug_data_2:
 debug_data_3:
     dw 0
 
+stackstore:
+    dw 0
+
+storedbanks:
+    db 0,0,0,0,0,0,0,0
+currentbanks:
+    db 0,0,0,0,0,0,0,0
