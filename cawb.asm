@@ -2,26 +2,16 @@
             
                 OPT     --zxnext    
                 DEVICE  ZXSPECTRUMNEXT                               // tell the assembler we want it for Spectrum Next
-                ORG     0x8000
-            include"defines.asm"
-            include"gamedefines.asm"
-            include"nextsprites.asm"
-            include"print.asm"
-            include"commonroutines.asm"
-            include"gamedata.asm"
-            include"player.asm"
-            include"game.asm"
-            include"enemies.asm"
-            include"menu.asm"
-            include"screentasks.asm"
-            include"banks.asm"
-StackEnd:
-                ds      127 
-StackStart:     db      0        
+                ORG     0x6000
+    
 StartAddress: 
+    di
     ld (stackstore), sp
+    ld sp,stack_start
+
     nextreg CPU_SPEED, SPEED_28_MHZ
-    ; call enter_layer_2
+
+     call enter_layer_2
      call getbanks
 
     ld HL,sprites
@@ -30,19 +20,26 @@ StartAddress:
     call DMASprites
 
     nextreg SPR_LAYER_CONTROL, $01
+
 new_game:
     call set_lives
 
 
 respawn:
-    call exit_layer_2
-    call setbanks
+    ; call exit_layer_2
+    ; call setbanks
+
+
     call clear_game_screen
     call init_player
     call init_npcs
 
     call spr_off
-    call menu
+ ;   call menu
+    ld a,5
+    call change_border_to_a
+    ld e, %11100000
+    call clear_layer_2_with_e
 check_for_input:
     call wait_for_space_loop    
     jp z, start_game
@@ -51,10 +48,10 @@ check_for_quit:
     jp z, exit_program
     jp check_for_input
 start_game:
-    call menu
+    //call menu
     call clear_game_screen
-    call enter_layer_2
-    call getbanks
+    ; call enter_layer_2
+    ; call getbanks
 
     call draw_boundries
 loop:
@@ -95,11 +92,25 @@ game_exit:
 
 exit_program:
 
-;    call setbanks
-;    call exit_layer_2
+    call setbanks
+    call exit_layer_2
     ld sp, (stackstore)
+    ei
     ret
 
+
+            include"banks.asm"
+            include"defines.asm"
+            include"gamedefines.asm"
+            include"nextsprites.asm"
+            include"print.asm"
+            include"commonroutines.asm"
+            include"gamedata.asm"
+            include"player.asm"
+            include"game.asm"
+            include"enemies.asm"
+            include"menu.asm"
+            include"screentasks.asm"
 
 //end start 
 // now we save the compiled file so we can either run it or debug it
@@ -109,3 +120,7 @@ exit_program:
                 SAVENEX CFG  0
                 SAVENEX AUTO
                 SAVENEX CLOSE    
+
+
+    DISPLAY $
+    ASSERT $<$C000

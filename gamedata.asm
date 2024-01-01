@@ -69,8 +69,14 @@ debug_data_3:
 
 stackstore:
     dw 0
+    ds 128
+stack_start: 
+    ds 0
 
 storedbanks:
     db 0,0,0,0,0,0,0,0
 currentbanks:
     db 0,0,0,0,0,0,0,0
+
+avalue:
+    db 0

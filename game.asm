@@ -35,6 +35,11 @@ check_game_status:
     jp new_game
     ret
 
+halt_until_space_is_pressed:
+    call wait_for_space_loop    
+    ret z
+    jp halt_until_space_is_pressed
+
 wait_for_space_loop:
     LD BC, $7ffe
     IN A, (C)

@@ -43,3 +43,8 @@ usejumptable:
     jp (hl)
 
 l2plot:
+    ret
+
+change_border_to_a:
+    call 8859
+    ret

@@ -9,3 +9,14 @@ exit_layer_2:
     xor a
     out (c),a
     ret
+
+clear_layer_2:
+    ld e,0
+clear_layer_2_with_e:
+    ld a,9
+    call clearbank
+    ld a,10
+    call clearbank
+    ld a,11
+    jp clearbank ;will return from clearbank
+
