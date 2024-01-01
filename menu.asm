@@ -1,8 +1,8 @@
 
 menu:    
-    ; ld e, %11100000
-    ; call clear_layer_2_with_e
-    call sprint
+    ld e, %11100000
+    call clear_layer_2_with_e
+    call sprint_layer_2
     db PRINTAT,64,32,"WILLOW ROD GAMES"
     db PRINTAT,96,48,"PRESENTS"
     db PRINTINK, 2*8+7+64
@@ -16,7 +16,7 @@ menu:
 
 registers:
     ld (debug_data_1), a
-    call sprint
+    call sprint_layer_2
     db PRINTAT,104,2,PRINTINK, 56,"A: ", PRINTHEX16 ;PRINTINK, 2*8+7,
     dw debug_data_1
     db PRINTEOF

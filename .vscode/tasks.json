@@ -11,7 +11,10 @@
             // and the argument to create a listing file is added
             "command": "//usr/local/bin/sjasmplus",
             "args": [
+                "--fullpath",
                 "--lst=${fileDirname}/${fileBasenameNoExtension}.lst",
+                "--lstlab=sort",
+                "--sld=${fileDirname}/${fileBasenameNoExtension}.sld",
                 "${file}"
             ],
             "group": {

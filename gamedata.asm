@@ -19,7 +19,7 @@ score:
 bigscore:
     dw $ff00
 
-sprites incbin "arrow.spr"
+;sprites incbin "arrow.spr"
 
 font incbin "SpecFont.chr"
 

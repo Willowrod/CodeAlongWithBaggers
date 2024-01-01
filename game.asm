@@ -17,7 +17,7 @@ boxloop:
 
 
 print_out_data:
-    call sprint
+    call sprint_layer_2
     db PRINTAT,16,2,"Lives: ", PRINTDECIMAL8 ;PRINTINK, 2*8+7,
     dw player_lives
     db PRINTAT,104,2,PRINTINK, 56,"Other: ", PRINTHEX16 ;PRINTINK, 2*8+7,

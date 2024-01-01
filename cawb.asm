@@ -5,7 +5,6 @@
                 ORG     0x6000
     
 StartAddress: 
-    di
     ld (stackstore), sp
     ld sp,stack_start
 
@@ -26,20 +25,12 @@ new_game:
 
 
 respawn:
-    ; call exit_layer_2
-    ; call setbanks
-
-
     call clear_game_screen
     call init_player
     call init_npcs
 
     call spr_off
- ;   call menu
-    ld a,5
-    call change_border_to_a
-    ld e, %11100000
-    call clear_layer_2_with_e
+    call menu
 check_for_input:
     call wait_for_space_loop    
     jp z, start_game
@@ -48,10 +39,8 @@ check_for_quit:
     jp z, exit_program
     jp check_for_input
 start_game:
-    //call menu
+    call menu
     call clear_game_screen
-    ; call enter_layer_2
-    ; call getbanks
 
     call draw_boundries
 loop:
@@ -95,7 +84,8 @@ exit_program:
     call setbanks
     call exit_layer_2
     ld sp, (stackstore)
-    ei
+    ld a,5
+    call change_border_to_a
     ret
 
 
@@ -111,6 +101,7 @@ exit_program:
             include"enemies.asm"
             include"menu.asm"
             include"screentasks.asm"
+            include"graphics.asm"
 
 //end start 
 // now we save the compiled file so we can either run it or debug it
