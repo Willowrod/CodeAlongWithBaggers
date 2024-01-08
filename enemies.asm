@@ -46,7 +46,8 @@ handle_character_loop:
 
     ld e,(IX+CHARACTER_X)
     ld d,(ix+CHARACTER_Y)
-    call plot
+    ld a, %00000011
+    call plot_layer2
 
 
     pop bc
@@ -59,25 +60,25 @@ char1_stand_still:
     ret
 char1_down:
     inc d
-    call checkpixel
+    call checkpixel_layer2
     jr nz, tryleftorright
     ld (ix+CHARACTER_Y), d
     ret
 char1_left:
     dec e
-    call checkpixel
+    call checkpixel_layer2
     jr nz, tryupordown
     ld (IX+CHARACTER_X), e
     ret
 char1_up:
     dec d
-    call checkpixel
+    call checkpixel_layer2
     jr nz, tryleftorright
     ld (IX+CHARACTER_Y), d
     ret
 char1_right:
     inc e
-    call checkpixel
+    call checkpixel_layer2
     jr nz, tryupordown
     ld (IX+CHARACTER_X), e
     ret
@@ -105,13 +106,13 @@ tryright:
     inc e
     ld (IX+CHARACTER_X), E
     ld (IX+CHARACTER_ACTION), MOVE_RIGHT
-    call checkpixel
+    call checkpixel_layer2
     ret z
     dec e
     dec e
     ld (IX+CHARACTER_X), E
     ld (IX+CHARACTER_ACTION), MOVE_UP
-    call checkpixel
+    call checkpixel_layer2
     ret z
     jp setdead
 
@@ -119,13 +120,13 @@ tryleft:
     dec e
     ld (IX+CHARACTER_X), e
     ld (IX+CHARACTER_ACTION), MOVE_LEFT
-    call checkpixel
+    call checkpixel_layer2
     ret z
     inc e
     inc e
     ld (IX+CHARACTER_X), E
     ld (IX+CHARACTER_ACTION), MOVE_RIGHT
-    call checkpixel
+    call checkpixel_layer2
     ret z
     jp setdead
 
@@ -138,26 +139,26 @@ trydown:
     inc d
     ld (IX+CHARACTER_Y), d
     ld (IX+CHARACTER_ACTION), MOVE_DOWN
-    call checkpixel
+    call checkpixel_layer2
     ret z
     dec d
     dec d
     ld (IX+CHARACTER_Y), d
     ld (IX+CHARACTER_ACTION), MOVE_UP
-    call checkpixel
+    call checkpixel_layer2
     ret z
     jp setdead
 tryup:
     dec d
     ld (IX+CHARACTER_Y), d
     ld (IX+CHARACTER_ACTION), MOVE_UP
-    call checkpixel
+    call checkpixel_layer2
     ret z
     inc d
     inc d
     ld (IX+CHARACTER_Y), d
     ld (IX+CHARACTER_ACTION), MOVE_DOWN
-    call checkpixel
+    call checkpixel_layer2
     ret z
     jp setdead
 setdead:

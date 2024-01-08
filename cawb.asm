@@ -25,7 +25,8 @@ new_game:
 
 
 respawn:
-    call clear_game_screen
+    ;call clear_game_screen
+    call clear_layer_2
     call init_player
     call init_npcs
 
@@ -40,7 +41,8 @@ check_for_quit:
     jp check_for_input
 start_game:
     call menu
-    call clear_game_screen
+    ;call clear_game_screen
+    call clear_layer_2
 
     call draw_boundries
 loop:

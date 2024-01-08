@@ -1,15 +1,16 @@
 draw_boundries:   
     ld e,0
 boxloop:
+    ld a, %11100000
     ld d,10
-    call plot
+    call plot_layer2
     ld d,181
-    call plot
+    call plot_layer2
     ld d,e
     ld e,10
-    call plot
+    call plot_layer2
     ld e,245
-    call plot
+    call plot_layer2
     ld e,d
     inc e
     jr nz, boxloop

@@ -69,13 +69,14 @@ notp:
     and 3
     ld hl, URDLjptable
     call usejumptable
-    call checkpixel
+    call checkpixel_layer2
     jp nz, player_death
     LD A,E
     LD (xpos), A
     LD A,D
     LD (ypos), A
-    call plot
+    ld a, %00011100
+    call plot_layer2
     ret
 
 URDLjptable:
@@ -117,5 +118,5 @@ check_m
     LD BC, $7FFE
     IN A, (C)
     BIT 2,A
-    CALL Z, plot
+    CALL Z, plot_layer2
     ret
