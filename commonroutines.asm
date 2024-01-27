@@ -48,3 +48,24 @@ l2plot:
 change_border_to_a:
     call 8859
     ret
+
+my_stored_pairs
+    dw $0,$0,$0,$0
+
+push_all:
+    ld (my_stored_pairs + 0), hl
+    ld (my_stored_pairs + 2), de
+    ld (my_stored_pairs + 4), bc
+    push af
+    pop bc
+    ld (my_stored_pairs + 6), bc
+    ret
+
+pop_all:
+    ld bc, (my_stored_pairs + 6)
+    push bc
+    pop af
+    ld bc, (my_stored_pairs + 4)
+    ld de, (my_stored_pairs + 2)
+    ld hl, (my_stored_pairs + 0)
+    ret

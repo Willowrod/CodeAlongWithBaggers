@@ -20,17 +20,27 @@ StartAddress:
 
     nextreg SPR_LAYER_CONTROL, $01
 
+        ld  bc, $243b     // tbblue port again
+    ld  a, $4b      // choose the transparency index register for sprites
+    out  (c), a  
+    ld  bc, $253b     // tell it the index
+    ld  a, 0      // setting the transparency index to palette element 0
+    out  (c), a      // yup send it 
+
 new_game:
     call set_lives
 
 
 respawn:
-    ;call clear_game_screen
-    call clear_layer_2
+ ;   call clear_layer_2
     call init_player
     call init_npcs
 
     call spr_off
+    ld de, 0
+    ld a, 0
+    call draw_room_layer_2
+
     call menu
 check_for_input:
     call wait_for_space_loop    
@@ -40,15 +50,16 @@ check_for_quit:
     jp z, exit_program
     jp check_for_input
 start_game:
-    call menu
-    ;call clear_game_screen
-    call clear_layer_2
+ ;   call menu
+ ;   call clear_layer_2
 
-    call draw_boundries
+ ;   call draw_boundries
+    call draw_room_layer_2
 loop:
-    call print_out_data
+ ;   call print_out_data
+ ;   call draw_room_layer_2
     
-    call draw_sprites_on_screen
+ ;   call draw_sprites_on_screen
     
     call handle_player
     call handle_characters
@@ -71,7 +82,7 @@ normal_loop_continue:
     jp loop
 
 draw_sprites_on_screen:
-    nextreg SPR_SELECT, 1
+    ;nextreg SPR_SELECT, 1
 
 
     call draw_player
@@ -107,7 +118,7 @@ exit_program:
 
 //end start 
 // now we save the compiled file so we can either run it or debug it
-//                SAVENEX OPEN "cawb.nex", StartAddress
+  //              SAVENEX OPEN "cawb.nex", StartAddress
                 SAVENEX OPEN "/Users/mikehall/Documents/NextSync/home/CAWB/cawb.nex", StartAddress
                 SAVENEX CORE 3, 0, 0                                // Next core 3.0.0 required as minimum
                 SAVENEX CFG  0

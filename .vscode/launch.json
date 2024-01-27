@@ -15,27 +15,53 @@
                     "hostname": "localhost",
                     "port": 11000
             },
-// for when my next arrives i hope this works
-            "zxnext":
-            {
-                    "baudrate": 230400,
-                    "port": "/dev/tty.usbserial"
+            "rootFolder": "${workspaceFolder}",
+            "disassemblerArgs": {
+                "esxdosRst": true
+            },
+            "load": "${fileBasenameNoExtension}.nex",
+            "skipInterrupt": false,
+            "startAutomatically": true,
+            "sjasmplus": [
+                {
+                    "useFiles": true,
+                    "asm": "sjasmplus",
+                    "path": "//usr/local/bin/sjasmplus",
+                    "mainFile": "${relativeFileDirname}/cawb.asm",
+                    "cwd": "${workspaceFolder}" //,
+                }
+            ],
+        },
+        {
+            "type": "dezog",
+            "request": "launch",
+            "name": "Next Build",
+            "remoteType": "cspect",
+            // connect to the CSpect emulator via TCIP
+            "cspect": {
+                "hostname": "localhost",
+                "port": 11000
+            },
+            // for when my next arrives i hope this works
+            "zxnext": {
+                "baudrate": 230400,
+                "port": "/dev/tty.usbserial"
             },
             "rootFolder": "${fileDirname}",
             "listFiles": [
-              {
-                  "path": "${fileDirname}/${fileBasenameNoExtension}.lst",
-                  "useFiles": true,
-                  "asm": "sjasmplus",
-                  "mainFile": "${fileDirname}/${fileBasenameNoExtension}.asm"
-              }
+                {
+                    "path": "${fileDirname}/${fileBasenameNoExtension}.lst",
+                    "useFiles": true,
+                    "asm": "sjasmplus",
+                    "mainFile": "${fileDirname}/${fileBasenameNoExtension}.asm"
+                }
             ],
             "disassemblerArgs": {
                 "esxdosRst": true
             },
             "load": "${fileBasenameNoExtension}.nex",
             "skipInterrupt": false,
-            "startAutomatically": false,
+            "startAutomatically": true,
             "sjasmplus": [
                 {
                     "path": "//usr/local/bin/sjasmplus"

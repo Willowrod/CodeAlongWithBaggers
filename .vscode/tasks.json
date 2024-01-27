@@ -14,6 +14,8 @@
                 "--fullpath",
                 "--lst=${fileDirname}/${fileBasenameNoExtension}.lst",
                 "--lstlab=sort",
+                "--zxnext",
+                "--nologo",
                 "--sld=${fileDirname}/${fileBasenameNoExtension}.sld",
                 "${file}"
             ],

@@ -25,7 +25,6 @@ plot_layer2:
     push DE
     push BC
     push af
-    ;ld a,255
     ld c,a
     ld hl, (currentbanks+6)
     push af
@@ -80,8 +79,6 @@ checkpixel_layer2:
     ld a, (de)
     ld c,a
 
-
-
     pop af
     ld (currentbanks+6), a
     nextreg MMU_REGISTER_6, a
@@ -89,5 +86,91 @@ checkpixel_layer2:
     pop bc
     pop de
     pop hl
-    or a
+    ;or a
+    cp a, $e3
     ret
+
+draw_room_layer_2:
+ ;   call push_all
+
+    ld e, 12*16
+    ld d,a
+    mul d,e
+    ld hl, roomdata
+    add hl, de
+    ld de,0
+    ;ld c, 12
+
+draw_room_layer_2_c_loop:
+    ld b, 16
+
+draw_room_layer_2_b_loop:
+    ld a, (hl)
+    inc hl
+    call draw_sprite_layer_2
+    ld a, e
+    add a, 16
+    ld e, a
+    djnz draw_room_layer_2_b_loop
+
+    ld a, d
+    add a, 16
+    ld d, a
+    cp 192
+
+    jp c, draw_room_layer_2_c_loop
+
+ ;   call pop_all
+    ret
+
+draw_sprite_layer_2:
+;    call push_all
+
+    PUSH HL
+    PUSH DE
+    PUSH BC
+    PUSH AF
+    ld l, 0
+    ld h, a
+    add hl, sprites
+    ld a, (currentbanks + 1)
+    push af
+    ld a,d
+    and $e0
+    rlca
+    rlca
+    rlca
+    add a, 9*2
+    ld (currentbanks + 1), a
+    nextreg MMU_REGISTER_1, a
+    ld a, d
+    and $1f
+    add a, $20 ; point to 8k bank 1
+    ld d, a
+    ld c, 16
+draw_l2_sprite_c_lp:
+    ld b, 16
+draw_l2_sprite_b_lp:
+    ld a, (hl)
+    ld (de), a
+    inc hl
+    inc e
+    djnz draw_l2_sprite_b_lp
+    ld a,e
+    sub 16
+    ld e, a
+    inc d
+    dec c
+    jp nz, draw_l2_sprite_c_lp
+    pop af
+    ld (currentbanks + 1), a
+    nextreg MMU_REGISTER_1, a
+    ;call pop_all
+    pop AF
+    pop BC
+    pop DE
+    pop HL
+    ret
+
+
+
