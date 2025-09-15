@@ -19,18 +19,19 @@
             "disassemblerArgs": {
                 "esxdosRst": true
             },
-            "load": "${fileBasenameNoExtension}.nex",
-            "skipInterrupt": false,
+            "load": "/Users/mikehall/Documents/NextSync/home/CAWB/cawb.nex",
+            //"skipInterrupt": true,
             "startAutomatically": true,
             "sjasmplus": [
                 {
                     "useFiles": true,
                     "asm": "sjasmplus",
-                    "path": "//usr/local/bin/sjasmplus",
+                    "path": "${relativeFileDirname}/cawb.sld",//"//usr/local/bin/sjasmplus",
                     "mainFile": "${relativeFileDirname}/cawb.asm",
                     "cwd": "${workspaceFolder}" //,
                 }
             ],
+            "preLaunchTask": "sjasmplus"
         },
         {
             "type": "dezog",
@@ -48,19 +49,19 @@
                 "port": "/dev/tty.usbserial"
             },
             "rootFolder": "${fileDirname}",
-            "listFiles": [
-                {
-                    "path": "${fileDirname}/${fileBasenameNoExtension}.lst",
-                    "useFiles": true,
-                    "asm": "sjasmplus",
-                    "mainFile": "${fileDirname}/${fileBasenameNoExtension}.asm"
-                }
-            ],
+            // "listFiles": [
+            //     {
+            //         "path": "${fileDirname}/${fileBasenameNoExtension}.lst",
+            //         "useFiles": true,
+            //         "asm": "sjasmplus",
+            //         "mainFile": "${fileDirname}/${fileBasenameNoExtension}.asm"
+            //     }
+            // ],
             "disassemblerArgs": {
                 "esxdosRst": true
             },
             "load": "${fileBasenameNoExtension}.nex",
-            "skipInterrupt": false,
+          //  "skipInterrupt": false,
             "startAutomatically": true,
             "sjasmplus": [
                 {

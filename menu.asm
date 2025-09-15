@@ -3,7 +3,7 @@ menu:
     ;ld e, %11100000
     ;call clear_layer_2 ;_with_e
     call sprint_layer_2
-    db PRINTAT,64,32,"WILLOW ROD GAMES"
+    db PRINTAT,64,32,"WILLOW XXX GAMES"
     db PRINTAT,96,48,"PRESENTS"
     db PRINTINK, 2*8+7+64
     db PRINTAT,80,80,"LIGHT RIDING"
